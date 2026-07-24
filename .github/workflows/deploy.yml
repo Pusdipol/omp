@@ -24,10 +24,14 @@ jobs:
           script: |
             cd ~/domains/pusdipol.com/public_html/buku
             
-            # Tarik kode terbaru dari GitHub dan paksa kembalikan file yang terhapus
-            git fetch --all
-            git reset --hard origin/main
-            git clean -fd
+            # Jika folder kosong/bukan git, clone dari awal. Jika sudah, paksa reset.
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/Pusdipol/omp.git .
+            else
+              git fetch --all
+              git reset --hard origin/main
+              git clean -fd
+            fi
             
             # Install/Update dependencies PHP jika ada perubahan
             cd lib/pkp
