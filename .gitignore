@@ -10,3 +10,4 @@ config.inc.php
 node_modules/
 vendor/
 .env
+cache/opcache/

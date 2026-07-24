@@ -1,0 +1,36 @@
+name: Deploy OMP
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Execute Deployment via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            cd ~/domains/pusdipol.com/public_html/buku
+            
+            # Tarik kode terbaru dari GitHub
+            git pull origin main
+            
+            # Install/Update dependencies PHP jika ada perubahan
+            cd lib/pkp
+            composer install --no-dev --optimize-autoloader
+            
+            # Kosongkan template cache agar perubahan langsung terlihat
+            cd ../../
+            php tools/clearTemplateCache.php || true
