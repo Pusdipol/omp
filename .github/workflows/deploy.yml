@@ -24,14 +24,14 @@ jobs:
           script: |
             cd ~/domains/pusdipol.com/public_html/buku
             
-            # Jika folder kosong/bukan git, clone dari awal. Jika sudah, paksa reset.
+            # Jika folder bukan git, inisialisasi dari awal agar tidak bentrok dengan file yang sudah diupload manual.
             if [ ! -d ".git" ]; then
-              git clone https://github.com/Pusdipol/omp.git .
-            else
-              git fetch --all
-              git reset --hard origin/main
-              git clean -fd
+              git init
+              git remote add origin https://github.com/Pusdipol/omp.git
             fi
+            git fetch --all
+            git reset --hard origin/main
+            git clean -fd
             
             # Install/Update dependencies PHP jika ada perubahan
             cd lib/pkp
