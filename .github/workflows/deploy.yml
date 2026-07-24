@@ -24,8 +24,10 @@ jobs:
           script: |
             cd ~/domains/pusdipol.com/public_html/buku
             
-            # Tarik kode terbaru dari GitHub
-            git pull origin main
+            # Tarik kode terbaru dari GitHub dan paksa kembalikan file yang terhapus
+            git fetch --all
+            git reset --hard origin/main
+            git clean -fd
             
             # Install/Update dependencies PHP jika ada perubahan
             cd lib/pkp
