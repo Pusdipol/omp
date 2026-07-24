@@ -56,5 +56,4 @@ jobs:
             fi
             
             # Kosongkan template cache agar perubahan langsung terlihat
-            cd ../../
             php tools/clearTemplateCache.php || true
