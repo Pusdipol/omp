@@ -33,6 +33,15 @@ jobs:
             git reset --hard origin/main
             git clean -fd
             
+            # Gunakan konfigurasi Hostinger secara otomatis
+            if [ -f "config.hostinger.inc.php" ]; then
+              cp config.hostinger.inc.php config.inc.php
+            fi
+            
+            # Pastikan folder penting ada dan memiliki hak akses (menghindari HTTP ERROR 500)
+            mkdir -p cache/t_cache cache/t_compile cache/t_config cache/_db public
+            chmod -R 775 cache public
+            
             # Install/Update dependencies PHP jika ada perubahan
             cd lib/pkp
             composer install --no-dev --optimize-autoloader
