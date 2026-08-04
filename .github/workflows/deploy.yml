@@ -61,4 +61,8 @@ jobs:
             fi
             
             # Kosongkan template cache agar perubahan langsung terlihat
-            php tools/clearTemplateCache.php
+            if [ -f "tools/clearTemplateCache.php" ]; then
+              php tools/clearTemplateCache.php
+            else
+              rm -f cache/t_compile/*.php
+            fi
