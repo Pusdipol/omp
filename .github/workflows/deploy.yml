@@ -43,15 +43,20 @@ jobs:
             chmod -R 775 cache public
             
             # Install/Update dependencies PHP jika ada perubahan
-            composer install --no-dev --optimize-autoloader
-            cd lib/pkp
-            composer install --no-dev --optimize-autoloader
-            cd ../../
+            if [ -f "composer.json" ]; then
+              composer install --no-dev --optimize-autoloader --quiet
+            fi
+            
+            if [ -d "lib/pkp" ] && [ -f "lib/pkp/composer.json" ]; then
+              cd lib/pkp
+              composer install --no-dev --optimize-autoloader --quiet
+              cd ../../
+            fi
             
             # Install dependency untuk plugin paypal jika ada
-            if [ -d "plugins/paymethod/paypal" ]; then
+            if [ -d "plugins/paymethod/paypal" ] && [ -f "plugins/paymethod/paypal/composer.json" ]; then
               cd plugins/paymethod/paypal
-              composer install --no-dev --optimize-autoloader
+              composer install --no-dev --optimize-autoloader --quiet
               cd ../../../
             fi
             
