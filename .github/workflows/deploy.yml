@@ -43,17 +43,17 @@ jobs:
             chmod -R 775 cache public
             
             # Install/Update dependencies PHP jika ada perubahan
-            composer install --no-dev --optimize-autoloader || true
+            composer install --no-dev --optimize-autoloader
             cd lib/pkp
-            composer install --no-dev --optimize-autoloader || true
+            composer install --no-dev --optimize-autoloader
             cd ../../
             
             # Install dependency untuk plugin paypal jika ada
             if [ -d "plugins/paymethod/paypal" ]; then
               cd plugins/paymethod/paypal
-              composer install --no-dev --optimize-autoloader || true
+              composer install --no-dev --optimize-autoloader
               cd ../../../
             fi
             
             # Kosongkan template cache agar perubahan langsung terlihat
-            php tools/clearTemplateCache.php || true
+            php tools/clearTemplateCache.php
