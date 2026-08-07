@@ -23,7 +23,7 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
             cd ~/domains/pusdipol.com/public_html/buku
-            
+
             # Jika folder bukan git, inisialisasi dari awal agar tidak bentrok dengan file yang sudah diupload manual.
             if [ ! -d ".git" ]; then
               git init
@@ -32,34 +32,34 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git clean -fd
-            
+
             # Gunakan konfigurasi Hostinger secara otomatis
-            if [ -f "config.hostinger.inc.php" ]; then
-              cp config.hostinger.inc.php config.inc.php
-            fi
-            
+            # if [ -f "config.hostinger.inc.php" ]; then
+            #   cp config.hostinger.inc.php config.inc.php
+            # fi
+
             # Pastikan folder penting ada dan memiliki hak akses (menghindari HTTP ERROR 500)
             mkdir -p cache/t_cache cache/t_compile cache/t_config cache/_db public
             chmod -R 775 cache public
-            
+
             # Install/Update dependencies PHP jika ada perubahan
             if [ -f "composer.json" ]; then
               composer install --no-dev --optimize-autoloader --quiet
             fi
-            
+
             if [ -d "lib/pkp" ] && [ -f "lib/pkp/composer.json" ]; then
               cd lib/pkp
               composer install --no-dev --optimize-autoloader --quiet
               cd ../../
             fi
-            
+
             # Install dependency untuk plugin paypal jika ada
             if [ -d "plugins/paymethod/paypal" ] && [ -f "plugins/paymethod/paypal/composer.json" ]; then
               cd plugins/paymethod/paypal
               composer install --no-dev --optimize-autoloader --quiet
               cd ../../../
             fi
-            
+
             # Kosongkan template cache agar perubahan langsung terlihat
             if [ -f "tools/clearTemplateCache.php" ]; then
               php tools/clearTemplateCache.php
